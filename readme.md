@@ -44,38 +44,62 @@
 https://github.com/puz102/wjkc-checkin-ios
 ```
 
-### 2）替换仓库路径
-将脚本/模块中的：
-```text
-OWNER/REPO
-```
-替换成你自己的仓库路径，例如：
+### 2）确认仓库路径
+本仓库已使用：
 ```text
 puz102/wjkc-checkin-ios
 ```
+如果你 Fork 后放到自己的仓库，请同步替换为你自己的路径。
 
 ### 3）导入到对应 APP
 
 #### Shadowrocket
-- 导入 `shadowrocket/module.sgmodule`
-- 开启 MITM
-- 信任证书
+1. 打开 Shadowrocket
+2. 模块 -> 添加模块
+3. 导入远程模块地址：
+```text
+https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/shadowrocket/module.sgmodule
+```
+4. 开启 MITM
+5. 安装并信任证书
+6. 打开网页登录一次，触发自动抓取 token
 
 #### Surge
-- 导入 `surge/module.sgmodule`
-- 开启 MITM
-- 信任证书
+1. 打开 Surge
+2. 模块 -> 安装模块
+3. 导入远程模块地址：
+```text
+https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/surge/module.sgmodule
+```
+4. 开启 MITM
+5. 安装并信任证书
+6. 打开网页登录一次，触发自动抓取 token
 
 #### Quantumult X
-- 引用远程任务 `quantumultx/remote-task.conf`
-- 添加远程脚本
-- 开启 MITM
-- 信任证书
+1. 打开 Quantumult X
+2. 引用远程任务：
+```text
+https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/quantumultx/remote-task.conf
+```
+3. 添加远程脚本：
+```text
+https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/quantumultx/capture-token.js
+https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/quantumultx/checkin.js
+```
+4. 开启 MITM
+5. 安装并信任证书
+6. 打开网页登录一次，触发自动抓取 token
 
 #### Loon
-- 导入 `loon/plugin.plugin`
-- 开启 MITM
-- 信任证书
+1. 打开 Loon
+2. 插件 -> 安装远程插件
+3. 导入远程插件地址：
+```text
+https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/loon/plugin.plugin
+```
+4. 开启 MITM
+5. 安装并信任证书
+6. 打开网页登录一次，触发自动抓取 token
 
 ### 4）在网页登录一次
 打开任意支持域名登录：
