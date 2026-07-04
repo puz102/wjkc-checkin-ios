@@ -131,7 +131,12 @@ https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/loon/plugin.plugi
 ---
 
 ## 增强模式说明
-如果你希望更接近“登录后立刻自动签到”，可使用增强模式脚本。
+如果你希望“登录后立刻自动签到”，可使用增强模式脚本：
+
+- `shadowrocket/capture-token-checkin.js`
+- `surge/capture-token-checkin.js`
+- `quantumultx/capture-token-checkin.js`
+- `loon/capture-token-checkin.js`
 
 ### 增强模式原理
 1. 用户在网页登录
@@ -142,6 +147,24 @@ https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/loon/plugin.plugi
 ### 推荐使用方式
 - 优先用于：你希望登录后马上看到签到结果
 - 保持定时任务兜底：避免遗漏
+
+---
+
+## token 过期提醒说明
+本仓库新增了一个轻量提醒脚本：
+
+- `shadowrocket/token-check.js`
+- `surge/token-check.js`
+- `quantumultx/token-check.js`
+- `loon/token-check.js`
+
+### 作用
+- 检查当前 token 是否有效
+- 若失效，提醒用户重新登录网页
+
+### 推荐用法
+- 每天运行 1 次
+- 或与签到任务错开时间运行
 
 ---
 
