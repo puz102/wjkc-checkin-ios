@@ -3,7 +3,7 @@
 #!category=Checkin
 
 [MITM]
-hostname = %APPEND% wj-kc.com, 84.wj-kc.com, ks.wjkc.xyz
+hostname = wj-kc.com, 84.wj-kc.com, ks.wjkc.xyz
 
 [Script]
 # Capture token from login response
