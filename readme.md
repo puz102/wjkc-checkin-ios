@@ -127,6 +127,63 @@ https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/loon/plugin.plugi
 
 ---
 
+## 如何确认 token 已抓到
+
+### Shadowrocket
+1. 打开 Shadowrocket
+2. 查看脚本运行日志
+3. 如果看到 `KS Token Captured` 通知，说明抓取成功
+4. 也可以在运行签到脚本时观察是否提示“未获取到token”
+
+### Surge
+1. 打开 Surge
+2. 查看脚本日志/通知
+3. 如果看到 `KS Token Captured`，说明成功
+4. 运行签到脚本，不再提示“未获取到token”即为正常
+
+### Quantumult X
+1. 打开 Quantumult X
+2. 查看脚本通知/日志
+3. 出现 `KS Token Captured` 即为成功
+4. 运行签到脚本时不再提示缺 token
+
+### Loon
+1. 打开 Loon
+2. 查看脚本通知
+3. 出现 `KS Token Captured` 即为成功
+4. 运行签到脚本时不再提示缺 token
+
+---
+
+## 更直接的验证方式
+如果你希望更直观确认，可以按顺序做：
+
+### 第 1 步：确保模块/插件已导入
+### 第 2 步：确保 MITM 已开启
+### 第 3 步：确保证书已信任
+### 第 4 步：打开网页登录一次
+### 第 5 步：回到 APP 查看通知
+
+如果看到类似：
+```text
+KS Token Captured
+wj-kc.com
+Token stored for auto checkin.
+```
+就说明 token 已经成功抓到了。
+
+---
+
+## 如果没有看到抓取成功通知
+请检查：
+- 是否在支持的域名登录
+- 是否开了 MITM
+- 是否信任证书
+- 是否正确导入模块/插件
+- 是否被 APP 缓存影响
+
+---
+
 ## 常见问题
 
 ### 为什么需要 MITM？
