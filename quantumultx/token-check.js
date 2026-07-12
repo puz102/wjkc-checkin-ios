@@ -4,24 +4,25 @@
 */
 
 var domains = ["wj-kc.com", "84.wj-kc.com", "ks.wjkc.xyz"];
-var baseKey = "YOUR_TOKEN_STORAGE_KEY";
-var lastActiveKey = "YOUR_LAST_ACTIVE_DOMAIN_KEY";
+var baseKey = "wjkc_checkin_token_";
+var lastActiveKey = "wjkc_checkin_last_domain";
 
 function request(url, token) {
-  return new Promise(function (resolve, reject) {
-    $task.fetch({
-      url: url,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Cookie": "token=" + token,
-        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
-      },
-      body: "{}"
-    }, function (err, resp) {
-      if (err) return reject(err);
-      resolve(resp);
-    });
+  return $task.fetch({
+    url: url,
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Cookie": "token=" + token,
+      "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
+    },
+    body: "{}"
+  }).then(function (resp) {
+    var status = Number(resp && (resp.statusCode || resp.status));
+    if (status && (status < 200 || status >= 300)) {
+      throw new Error("HTTP " + status);
+    }
+    return resp;
   });
 }
 
@@ -45,10 +46,14 @@ function parseBody(body) {
     if (ordered.indexOf(d) === -1) ordered.push(d);
   });
 
+  var foundToken = false;
+  var lastError = "";
+
   for (var i = 0; i < ordered.length; i++) {
     var domain = ordered[i];
     var token = $prefs.valueForKey(baseKey + domain);
     if (!token) continue;
+    foundToken = true;
 
     try {
       var resp = await request("https://" + domain + "/api/user/userinfo", token);
@@ -59,10 +64,17 @@ function parseBody(body) {
         return;
       }
     } catch (e) {
+      lastError = String(e);
       continue;
     }
   }
 
-  $notify("KS Token 已失效", "请重新在网页登录", "登录后模块会自动抓取新 token");
+  if (!foundToken) {
+    $notify("KS Token 检查", "未获取到 token", "请先在网页登录");
+  } else if (lastError) {
+    $notify("KS Token 检查失败", "网络或接口异常", lastError);
+  } else {
+    $notify("KS Token 已失效", "请重新在网页登录", "登录后模块会自动抓取新 token");
+  }
   $done();
 })();

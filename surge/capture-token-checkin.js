@@ -6,16 +6,30 @@
 */
 
 var domains = ["wj-kc.com", "84.wj-kc.com", "ks.wjkc.xyz"];
-var baseKey = "YOUR_TOKEN_STORAGE_KEY";
-var lastActiveKey = "YOUR_LAST_ACTIVE_DOMAIN_KEY";
+var baseKey = "wjkc_checkin_token_";
+var lastActiveKey = "wjkc_checkin_last_domain";
 var url = $request.url || "";
 var hostMatch = null;
 
 domains.forEach(function (d) {
-  if (!hostMatch && url.indexOf(d) !== -1) {
+  if (!hostMatch && url.indexOf("https://" + d + "/") === 0) {
     hostMatch = d;
   }
 });
+
+function getHeader(headers, name) {
+  var target = name.toLowerCase();
+  var value = "";
+  Object.keys(headers || {}).some(function (key) {
+    if (key.toLowerCase() === target) {
+      value = headers[key];
+      return true;
+    }
+    return false;
+  });
+  if (Array.isArray(value)) return value.join("; ");
+  return value == null ? "" : String(value);
+}
 
 function post(url, token) {
   return new Promise(function (resolve, reject) {
@@ -29,6 +43,10 @@ function post(url, token) {
       body: "{}"
     }, function (err, resp, body) {
       if (err) return reject(err);
+      var status = Number(resp && (resp.status || resp.statusCode));
+      if (status && (status < 200 || status >= 300)) {
+        return reject(new Error("HTTP " + status));
+      }
       resolve({ resp: resp, body: body });
     });
   });
@@ -49,8 +67,8 @@ function parseBody(body) {
 (async () => {
   if (hostMatch && /\/api\/user\/login/.test(url)) {
     try {
-      var setCookie = ($response.headers || {})["Set-Cookie"] || "";
-      var match = setCookie.match(/(?:^|;\s*)token=([^;]+)/i);
+      var setCookie = getHeader($response.headers, "set-cookie");
+      var match = setCookie.match(/(?:^|[;,]\s*)token=([^;,]+)/i);
       if (match && match[1]) {
         var token = match[1].trim();
         if (token) {
@@ -59,15 +77,16 @@ function parseBody(body) {
 
           try {
             var c = await post("https://" + hostMatch + "/api/user/sign_use", token);
-            var u = await post("https://" + hostMatch + "/api/user/userinfo", token);
             var checkin = parseBody(c.body);
-            var user = parseBody(u.body);
 
             if (checkin && checkin.code === 0) {
-              var addGB = ((checkin.data.addTraffic || 0) / 1024 / 1024 / 1024).toFixed(2) + " GB";
+              var u = await post("https://" + hostMatch + "/api/user/userinfo", token);
+              var user = parseBody(u.body);
+              var checkinData = checkin.data || {};
+              var addGB = ((checkinData.addTraffic || 0) / 1024 / 1024 / 1024).toFixed(2) + " GB";
               var totalGB = ((user && user.data ? user.data.traffic : 0) / 1024 / 1024 / 1024).toFixed(2) + " GB";
-              var cont = checkin.data.haveContinueSignUseData || 0;
-              var extra = checkin.data.extraReward ? "有" : "无";
+              var cont = checkinData.haveContinueSignUseData || 0;
+              var extra = checkinData.extraReward ? "有" : "无";
               $notification.post("KS登录+签到成功 (" + hostMatch + ")", "+" + addGB + " | 总流量 " + totalGB, "连续签到 " + cont + " 天\n额外奖励：" + extra);
             } else {
               $notification.post("KS Token Captured (" + hostMatch + ")", "登录成功，但签到失败", c.body);
@@ -77,7 +96,9 @@ function parseBody(body) {
           }
         }
       }
-    } catch (e) {}
+    } catch (e) {
+      console.log("KS token capture failed: " + String(e));
+    }
   }
   $done({});
 })();

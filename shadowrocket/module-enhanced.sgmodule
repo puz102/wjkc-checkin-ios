@@ -1,16 +1,11 @@
-#!name=KS Auto Checkin Template (Shadowrocket)
-#!desc=Auto capture token after login and run daily checkin.
+#!name=KS Auto Checkin Enhanced (Shadowrocket)
+#!desc=Capture token after login, check in immediately, and run scheduled check-ins.
 #!category=Checkin
 
 [MITM]
 hostname = wj-kc.com, 84.wj-kc.com, ks.wjkc.xyz
 
 [Script]
-# Capture token from login response
-ks-capture-token = type=http-response,pattern=^https://(wj-kc.com|84.wj-kc.com|ks.wjkc.xyz)/api/user/login,requires-body=0,script-path=https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/shadowrocket/capture-token.js,script-update-interval=86400
-
-# Daily checkin
+ks-capture-token-checkin = type=http-response,pattern=^https://(wj-kc.com|84.wj-kc.com|ks.wjkc.xyz)/api/user/login,requires-body=0,script-path=https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/shadowrocket/capture-token-checkin.js,script-update-interval=86400
 ks-checkin = type=cron,cronexp=0 8,12,21 * * *,timeout=60,script-path=https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/shadowrocket/checkin.js,script-update-interval=86400
-
-# Token validity check
 ks-token-check = type=cron,cronexp=30 8 * * *,timeout=60,script-path=https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/shadowrocket/token-check.js,script-update-interval=86400
