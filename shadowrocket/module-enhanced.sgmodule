@@ -6,9 +6,9 @@
 hostname = wj-kc.com, 84.wj-kc.com, ks.wjkc.xyz
 
 [Script]
-ks-capture-token-checkin = type=http-response,pattern=^https://(wj-kc.com|84.wj-kc.com|ks.wjkc.xyz)/api/user/login,requires-body=0,script-path=https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/shadowrocket/capture-token-checkin.js?v=20260713-3,script-update-interval=86400
+ks-capture-token-checkin = type=http-response,pattern=^https://(wj-kc.com|84.wj-kc.com|ks.wjkc.xyz)/api/user/login,requires-body=0,script-path=https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/shadowrocket/capture-token-checkin.js?v=20260713-4,script-update-interval=86400
 
 # Calibrate credentials from the browser request after login
-ks-calibrate-token = type=http-request,pattern=^https://(wj-kc.com|84.wj-kc.com|ks.wjkc.xyz)/api/user/userinfo,requires-body=0,script-path=https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/shadowrocket/capture-token.js?v=20260713-3,script-update-interval=86400
-ks-checkin = type=cron,cronexp=0 8,12,21 * * *,timeout=60,script-path=https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/shadowrocket/checkin.js?v=20260713-3,script-update-interval=86400
-ks-token-check = type=cron,cronexp=30 8 * * *,timeout=60,script-path=https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/shadowrocket/token-check.js?v=20260713-3,script-update-interval=86400
+ks-calibrate-token = type=http-request,pattern=^https://(wj-kc.com|84.wj-kc.com|ks.wjkc.xyz)/api/user/userinfo,requires-body=0,script-path=https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/shadowrocket/capture-token.js?v=20260713-4,script-update-interval=86400
+ks-checkin = type=cron,cronexp=0 8,12,21 * * *,timeout=60,script-path=https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/shadowrocket/checkin.js?v=20260713-4,script-update-interval=86400
+ks-token-check = type=cron,cronexp=30 8 * * *,timeout=60,script-path=https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/shadowrocket/token-check.js?v=20260713-4,script-update-interval=86400

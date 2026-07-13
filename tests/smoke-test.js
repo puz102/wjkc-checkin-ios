@@ -54,10 +54,6 @@ function runScript(relativePath, options = {}) {
       console,
       setTimeout,
       clearTimeout,
-      atob: (value) => Buffer.from(value, "base64").toString("utf8"),
-      $base64: {
-        decode: (value) => Buffer.from(value, "base64").toString("utf8"),
-      },
       $request: options.request || { url: "" },
       $response: options.response || { headers: {} },
       $done: done,

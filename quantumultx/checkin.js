@@ -12,7 +12,36 @@ var checkinPath = "/api/user/sign_use";
 var userinfoPath = "/api/user/userinfo";
 
 function base64Decode(s) {
-  return $base64.decode(s);
+  return decodeBase64Utf8(s);
+}
+
+function decodeBase64Utf8(input) {
+  var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+  var clean = String(input || "").replace(/-/g, "+").replace(/_/g, "/").replace(/[^A-Za-z0-9+/]/g, "");
+  var bytes = [];
+  var buffer = 0;
+  var bits = 0;
+
+  for (var i = 0; i < clean.length; i++) {
+    var value = chars.indexOf(clean.charAt(i));
+    if (value < 0) continue;
+    buffer = (buffer << 6) | value;
+    bits += 6;
+    if (bits >= 8) {
+      bits -= 8;
+      bytes.push((buffer >> bits) & 255);
+      buffer = bits ? buffer & ((1 << bits) - 1) : 0;
+    }
+  }
+
+  var escaped = "";
+  var binary = "";
+  for (var j = 0; j < bytes.length; j++) {
+    var hex = bytes[j].toString(16);
+    escaped += "%" + (hex.length < 2 ? "0" : "") + hex;
+    binary += String.fromCharCode(bytes[j]);
+  }
+  try { return decodeURIComponent(escaped); } catch (e) { return binary; }
 }
 
 function parseBody(body) {
