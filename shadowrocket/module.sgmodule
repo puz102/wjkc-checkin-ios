@@ -1,5 +1,5 @@
 #!name=网际快车签到
-#!desc=Auto capture token after login and run daily checkin.
+#!desc=登录后自动抓取登录凭证，并执行每日签到。
 #!category=Checkin
 
 [MITM]

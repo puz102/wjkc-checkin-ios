@@ -46,7 +46,7 @@ https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/shadowrocket/modu
 2. 开启 HTTPS 解密（MITM）。
 3. 安装并信任 Shadowrocket 证书。
 4. 打开任一支持域名并重新登录。
-5. 收到 `KS Token Captured` 通知后，可手动运行 `ks-checkin` 测试。
+5. 收到 `网际快车登录凭证抓取成功` 通知后，可手动运行 `ks-checkin` 测试。
 
 ## Surge
 
@@ -139,9 +139,9 @@ https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/quantumultx/remot
 登录成功后应看到类似通知：
 
 ```text
-KS Token Captured
+网际快车登录凭证抓取成功
 84.wj-kc.com
-Token stored for auto checkin.
+登录凭证已保存，可用于自动签到。
 ```
 
 普通版随后可手动运行签到任务。增强版会在登录后立即显示签到结果。

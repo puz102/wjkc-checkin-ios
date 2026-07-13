@@ -87,12 +87,12 @@ function parseBody(body) {
               var totalGB = ((user && user.data ? user.data.traffic : 0) / 1024 / 1024 / 1024).toFixed(2) + " GB";
               var cont = checkinData.haveContinueSignUseData || 0;
               var extra = checkinData.extraReward ? "有" : "无";
-              $notification.post("KS登录+签到成功 (" + hostMatch + ")", "+" + addGB + " | 总流量 " + totalGB, "连续签到 " + cont + " 天\n额外奖励：" + extra);
+              $notification.post("网际快车登录并签到成功 (" + hostMatch + ")", "+" + addGB + " | 总流量 " + totalGB, "连续签到 " + cont + " 天\n额外奖励：" + extra);
             } else {
-              $notification.post("KS Token Captured (" + hostMatch + ")", "登录成功，但签到失败", c.body);
+              $notification.post("网际快车登录凭证抓取成功 (" + hostMatch + ")", "登录成功，但签到失败", c.body);
             }
           } catch (e) {
-            $notification.post("KS Token Captured (" + hostMatch + ")", "登录成功，签到异常", String(e));
+            $notification.post("网际快车登录凭证抓取成功 (" + hostMatch + ")", "登录成功，签到异常", String(e));
           }
         }
       }

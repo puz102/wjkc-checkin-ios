@@ -59,7 +59,7 @@ function parseBody(body) {
       var resp = await request("https://" + domain + "/api/user/userinfo", token);
       var data = parseBody(resp.body);
       if (data && data.code === 0) {
-        $notify("KS Token 有效", domain, "当前 token 正常，可自动签到");
+        $notify("网际快车登录凭证有效", domain, "当前登录凭证正常，可自动签到");
         $done();
         return;
       }
@@ -70,11 +70,11 @@ function parseBody(body) {
   }
 
   if (!foundToken) {
-    $notify("KS Token 检查", "未获取到 token", "请先在网页登录");
+    $notify("网际快车登录凭证检查", "未获取到登录凭证", "请先在网页登录");
   } else if (lastError) {
-    $notify("KS Token 检查失败", "网络或接口异常", lastError);
+    $notify("网际快车登录凭证检查失败", "网络或接口异常", lastError);
   } else {
-    $notify("KS Token 已失效", "请重新在网页登录", "登录后模块会自动抓取新 token");
+    $notify("网际快车登录凭证已失效", "请重新在网页登录", "登录后模块会自动抓取新的登录凭证");
   }
   $done();
 })();

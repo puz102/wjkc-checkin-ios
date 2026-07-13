@@ -163,7 +163,7 @@ async function testEnhancedCapture(platform) {
     "test-token"
   );
   assert.ok(
-    result.notifications.some(([title]) => title.includes("登录+签到成功")),
+    result.notifications.some(([title]) => title.includes("登录并签到成功")),
     `${platform} enhanced capture should check in immediately`
   );
 }
@@ -222,7 +222,7 @@ async function testMissingTokenMessage(platform) {
   const result = await runScript(`${platform}/token-check.js`);
   assert.ok(
     result.notifications.some(([, subtitle]) =>
-      subtitle.includes("未获取到 token")
+      subtitle.includes("未获取到登录凭证")
     ),
     `${platform} should distinguish a missing token from an expired token`
   );

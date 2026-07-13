@@ -1,5 +1,5 @@
 #!name=网际快车签到
-#!desc=Capture token after login, check in immediately, and run scheduled check-ins.
+#!desc=登录后自动抓取登录凭证、立即签到，并保留定时签到。
 #!category=Checkin
 
 [MITM]

@@ -40,7 +40,7 @@ if (hostMatch && /\/api\/user\/login/.test(url)) {
       if (token) {
         $persistentStore.write(token, baseKey + hostMatch);
         $persistentStore.write(hostMatch, lastActiveKey);
-        $notification.post("KS Token Captured", hostMatch, "Token stored for auto checkin.");
+        $notification.post("网际快车登录凭证抓取成功", hostMatch, "登录凭证已保存，可用于自动签到。");
       }
     }
   } catch (e) {

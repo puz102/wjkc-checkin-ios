@@ -42,7 +42,7 @@ if (hostMatch && /\/api\/user\/login/.test(url)) {
       if (token.length > 0) {
         $prefs.setValueForKey(token, baseKey + hostMatch);
         $prefs.setValueForKey(hostMatch, lastActiveKey);
-        $notify("KS Token Captured", hostMatch, "Token stored for auto checkin.");
+        $notify("网际快车登录凭证抓取成功", hostMatch, "登录凭证已保存，可用于自动签到。");
       }
     }
   } catch (e) {

@@ -86,7 +86,7 @@ function notify(title, subtitle, msg) {
       var cont = checkinData.haveContinueSignUseData || 0;
       var extra = checkinData.extraReward ? "有" : "无";
 
-      notify("KS签到成功 (" + domain + ")", "+" + addGB + " | 总流量 " + totalGB, "连续签到 " + cont + " 天\n额外奖励：" + extra);
+      notify("网际快车签到成功 (" + domain + ")", "+" + addGB + " | 总流量 " + totalGB, "连续签到 " + cont + " 天\n额外奖励：" + extra);
       $done();
       return;
     } catch (e) {
@@ -96,9 +96,9 @@ function notify(title, subtitle, msg) {
   }
 
   if (!lastError) {
-    notify("KS签到", "未获取到token", "请先在网页登录，让模块自动抓取token");
+    notify("网际快车签到", "未获取到登录凭证", "请先在网页登录，让模块自动抓取登录凭证");
   } else {
-    notify("KS签到", "签到失败", lastError);
+    notify("网际快车签到", "签到失败", lastError);
   }
   $done();
 })();
