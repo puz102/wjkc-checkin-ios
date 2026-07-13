@@ -1,3 +1,5 @@
+#!name=网际快车签到
+
 [Plugin]
 ks-capture-token-checkin = type=http-response,pattern=^https://(wj-kc.com|84.wj-kc.com|ks.wjkc.xyz)/api/user/login,requires-body=0,script-path=https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/loon/capture-token-checkin.js,script-update-interval=86400
 ks-checkin = type=cron,cronexp=0 8,12,21 * * *,timeout=60,script-path=https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/loon/checkin.js,script-update-interval=86400

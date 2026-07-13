@@ -1,3 +1,5 @@
+#!name=网际快车签到
+
 [Plugin]
 # Auto capture token + daily checkin
 ks-capture-token = type=http-response,pattern=^https://(wj-kc.com|84.wj-kc.com|ks.wjkc.xyz)/api/user/login,requires-body=0,script-path=https://raw.githubusercontent.com/puz102/wjkc-checkin-ios/main/loon/capture-token.js,script-update-interval=86400
