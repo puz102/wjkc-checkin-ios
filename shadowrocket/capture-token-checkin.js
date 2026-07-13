@@ -40,7 +40,7 @@ function req(url, token) {
         "Cookie": "token=" + token,
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
       },
-      body: "{}"
+      body: JSON.stringify({ data: "e30=" })
     }, function (err, resp, body) {
       if (err) return reject(err);
       var status = Number(resp && (resp.status || resp.statusCode));

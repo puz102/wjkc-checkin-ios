@@ -14,6 +14,14 @@ function encoded(payload) {
   });
 }
 
+function assertEncodedEmptyBody(request, platform) {
+  assert.deepStrictEqual(
+    JSON.parse(request.body),
+    { data: "e30=" },
+    `${platform} should send the API's Base64-wrapped empty payload`
+  );
+}
+
 function runScript(relativePath, options = {}) {
   const source = fs.readFileSync(path.join(root, relativePath), "utf8");
   const store = options.store || {};
@@ -198,6 +206,9 @@ async function testCheckin(platform) {
   });
 
   assert.strictEqual(result.requests.length, 2);
+  result.requests.forEach((request) =>
+    assertEncodedEmptyBody(request, platform)
+  );
   assert.ok(
     result.notifications.some(
       ([title, subtitle]) =>
@@ -236,6 +247,25 @@ async function testHttpFailureMessage(platform) {
   );
 }
 
+async function testTokenCheckRequestBody(platform) {
+  const result = await runScript(`${platform}/token-check.js`, {
+    store: {
+      wjkc_checkin_last_domain: "84.wj-kc.com",
+      "wjkc_checkin_token_84.wj-kc.com": "test-token",
+    },
+    responseFor() {
+      return {
+        status: 200,
+        statusCode: 200,
+        body: encoded({ code: 0, data: {} }),
+      };
+    },
+  });
+
+  assert.strictEqual(result.requests.length, 1);
+  assertEncodedEmptyBody(result.requests[0], platform);
+}
+
 (async () => {
   for (const platform of platforms) {
     await testCapture(platform);
@@ -244,6 +274,7 @@ async function testHttpFailureMessage(platform) {
     await testCheckin(platform);
     await testMissingTokenMessage(platform);
     await testHttpFailureMessage(platform);
+    await testTokenCheckRequestBody(platform);
   }
   console.log(`Smoke tests passed for: ${platforms.join(", ")}`);
 })().catch((error) => {
