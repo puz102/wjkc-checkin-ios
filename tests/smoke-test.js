@@ -135,6 +135,35 @@ async function testHostBoundary(platform) {
   );
 }
 
+async function testRequestCookieCalibration(platform) {
+  const store = {
+    [`wjkc_checkin_token_84.wj-kc.com`]: "response-token",
+    [`wjkc_checkin_cookie_84.wj-kc.com`]: "token=response-token",
+  };
+  const result = await runScript(`${platform}/capture-token.js`, {
+    store,
+    request: {
+      url: "https://84.wj-kc.com/api/user/userinfo",
+      headers: {
+        Cookie: "theme=dark; session=session-value; token=request-token",
+      },
+    },
+  });
+
+  assert.strictEqual(
+    result.store["wjkc_checkin_token_84.wj-kc.com"],
+    "request-token"
+  );
+  assert.strictEqual(
+    result.store["wjkc_checkin_cookie_84.wj-kc.com"],
+    "theme=dark; session=session-value; token=request-token"
+  );
+  assert.ok(
+    result.notifications.some(([title]) => title.includes("校准成功")),
+    `${platform} should calibrate credentials from the browser request`
+  );
+}
+
 async function testEnhancedCapture(platform) {
   const result = await runScript(`${platform}/capture-token-checkin.js`, {
     request: { url: "https://84.wj-kc.com/api/user/login" },
@@ -266,15 +295,40 @@ async function testTokenCheckRequestBody(platform) {
   assertEncodedEmptyBody(result.requests[0], platform);
 }
 
+async function testTokenCheckUsesCalibratedCookie(platform) {
+  const result = await runScript(`${platform}/token-check.js`, {
+    store: {
+      wjkc_checkin_last_domain: "84.wj-kc.com",
+      "wjkc_checkin_token_84.wj-kc.com": "response-token",
+      "wjkc_checkin_cookie_84.wj-kc.com":
+        "session=session-value; token=request-token",
+    },
+    responseFor() {
+      return {
+        status: 200,
+        statusCode: 200,
+        body: encoded({ code: 0, data: {} }),
+      };
+    },
+  });
+
+  assert.strictEqual(
+    result.requests[0].headers.Cookie,
+    "session=session-value; token=request-token"
+  );
+}
+
 (async () => {
   for (const platform of platforms) {
     await testCapture(platform);
     await testHostBoundary(platform);
+    await testRequestCookieCalibration(platform);
     await testEnhancedCapture(platform);
     await testCheckin(platform);
     await testMissingTokenMessage(platform);
     await testHttpFailureMessage(platform);
     await testTokenCheckRequestBody(platform);
+    await testTokenCheckUsesCalibratedCookie(platform);
   }
   console.log(`Smoke tests passed for: ${platforms.join(", ")}`);
 })().catch((error) => {

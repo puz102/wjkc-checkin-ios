@@ -5,15 +5,16 @@
 
 var domains = ["wj-kc.com", "84.wj-kc.com", "ks.wjkc.xyz"];
 var baseKey = "wjkc_checkin_token_";
+var cookieKey = "wjkc_checkin_cookie_";
 var lastActiveKey = "wjkc_checkin_last_domain";
 
-function post(url, token) {
+function post(url, cookie) {
   return new Promise(function (resolve, reject) {
     $httpClient.post({
       url: url,
       headers: {
         "Content-Type": "application/json",
-        "Cookie": "token=" + token,
+        "Cookie": cookie,
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
       },
       body: JSON.stringify({ data: "e30=" })
@@ -53,12 +54,14 @@ function parseBody(body) {
 
   for (var i = 0; i < ordered.length; i++) {
     var domain = ordered[i];
+    var cookie = $persistentStore.read(cookieKey + domain);
     var token = $persistentStore.read(baseKey + domain);
-    if (!token) continue;
+    if (!cookie && token) cookie = "token=" + token;
+    if (!cookie) continue;
     foundToken = true;
 
     try {
-      var resp = await post("https://" + domain + "/api/user/userinfo", token);
+      var resp = await post("https://" + domain + "/api/user/userinfo", cookie);
       var data = parseBody(resp.body);
       if (data && data.code === 0) {
         $notification.post("网际快车登录凭证有效", domain, "当前登录凭证正常，可自动签到");
